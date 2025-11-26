@@ -15,6 +15,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     Optional<Book> findByIdAndDeletedFalse(Long id);
 
+    int countByCategoryId(Long categoryId);
+
     Page<Book> findAllByDeletedFalse(Pageable pageable);
 
     @Query("SELECT b FROM Book b WHERE b.deleted = false AND " +

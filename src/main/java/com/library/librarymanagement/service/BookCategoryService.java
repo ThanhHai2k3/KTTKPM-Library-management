@@ -17,4 +17,6 @@ public interface BookCategoryService {
     List<BookCategoryResponse> getAll();
 
     BookCategoryResponse getById(Long id);
+
+    boolean existsByName(String name);
 }

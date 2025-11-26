@@ -48,4 +48,9 @@ public class BookCategoryController {
     public ResponseEntity<BookCategoryResponse> getCategoryById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(categoryService.getById(id));
     }
+
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> existsByName(@RequestParam String name) {
+        return ResponseEntity.ok(categoryService.existsByName(name));
+    }
 }

@@ -8,4 +8,5 @@ public interface AuthService {
 
     AuthResponse registerStaff(StaffRegisterRequest request);
     AuthResponse login(LoginRequest request);
+    boolean existsByUsername(String username);
 }

@@ -12,4 +12,5 @@ public class BookCategoryResponse {
     private Long id;
     private String name;
     private String description;
+    private int bookCount;
 }

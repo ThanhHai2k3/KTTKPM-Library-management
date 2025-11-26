@@ -68,6 +68,7 @@ public class AuthServiceImpl implements AuthService {
                 token,
                 savedUser.getId(),
                 savedUser.getUsername(),
+                savedUser.getFullName(),
                 savedUser.getRole().getName().name()
         );
     }
@@ -94,7 +95,13 @@ public class AuthServiceImpl implements AuthService {
                 token,
                 user.getId(),
                 user.getUsername(),
+                user.getFullName(),
                 user.getRole().getName().name()
         );
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsernameIgnoreCase(username);
     }
 }

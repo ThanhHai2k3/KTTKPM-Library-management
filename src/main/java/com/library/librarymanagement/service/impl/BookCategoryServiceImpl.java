@@ -5,6 +5,7 @@ import com.library.librarymanagement.dto.request.BookCategoryUpdateRequest;
 import com.library.librarymanagement.dto.response.BookCategoryResponse;
 import com.library.librarymanagement.entity.BookCategory;
 import com.library.librarymanagement.repository.BookCategoryRepository;
+import com.library.librarymanagement.repository.BookRepository;
 import com.library.librarymanagement.service.BookCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.List;
 public class BookCategoryServiceImpl implements BookCategoryService {
 
     private final BookCategoryRepository categoryRepository;
+    private final BookRepository bookRepository;
 
     @Override
     public BookCategoryResponse create(BookCategoryCreateRequest request) {
@@ -61,6 +63,12 @@ public class BookCategoryServiceImpl implements BookCategoryService {
             throw new RuntimeException("Category not found");
         }
 
+        int count = bookRepository.countByCategoryId(id);
+
+        if (count > 0) {
+            throw new RuntimeException("Category has books, cannot delete");
+        }
+
         categoryRepository.deleteById(id);
     }
 
@@ -79,11 +87,18 @@ public class BookCategoryServiceImpl implements BookCategoryService {
         return mapToResponse(category);
     }
 
+    public boolean existsByName(String name) {
+        return categoryRepository.existsByNameIgnoreCase(name);
+    }
+
     private BookCategoryResponse mapToResponse(BookCategory category) {
-        return new BookCategoryResponse(
-                category.getId(),
-                category.getName(),
-                category.getDescription()
-        );
+        int count = bookRepository.countByCategoryId(category.getId());
+
+        return BookCategoryResponse.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .description(category.getDescription())
+                .bookCount(count)
+                .build();
     }
 }

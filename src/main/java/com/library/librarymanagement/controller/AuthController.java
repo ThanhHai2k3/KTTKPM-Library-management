@@ -6,10 +6,7 @@ import com.library.librarymanagement.dto.response.AuthResponse;
 import com.library.librarymanagement.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -28,5 +25,10 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         AuthResponse response = authService.login(request);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/check-username")
+    public ResponseEntity<Boolean> check(@RequestParam String username) {
+        return ResponseEntity.ok(authService.existsByUsername(username));
     }
 }
